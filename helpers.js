@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 
 export const checkUrlDuplicate = async (genUrl) => {
     const {urls} = await fs.readJson('./.data.json');
-    return !!urls.find(data => data.shortUrl === genUrl);
+    return !!urls.find(data => data.shorten === genUrl);
 };
 
 export const addurl = async (url) => {
@@ -23,8 +23,7 @@ export const generateUrl = async (url) => {
         for(let i=0;i<7;i++)
             urlGen+=genstring[Math.floor(Math.random()*genstring.length)];
         if(await checkUrlDuplicate(urlGen)){
-            let newUrl = await this.generateUrl(url);
-            return `http://localhost:3000/${newUrl}`;
+            generateUrl(url).then( data => `http://localhost:3000/${data}`);
         }
         if(!await addurl({site: url,shorten: urlGen}))
             return false;
@@ -32,4 +31,6 @@ export const generateUrl = async (url) => {
     }
     return false;
 };
-
+generateUrl('http://google.com').then(data => {
+    console.log(data);
+});
