@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 
-import { generateUrl } from './helpers.js';
+import { generateUrl,getUrl } from './helpers.js';
 
 const app = express();
 const __dirname = path.resolve();
@@ -32,8 +32,16 @@ app.post('/shorten',async (req,res) => {
     })
 });
 
+app.get('/:link',async (req,res) => {
+    const urlLink = await getUrl(req.params.link);
+   if(urlLink){
+       return res.redirect(urlLink.site);
+   }
+    res.status(404).sendFile(__dirname+'/public/404.html');
+});
+
 app.get('*',(req,res) => {
-    res.sendFile(__dirname+'/public/404.html');
+    return res.sendFile(__dirname+'/public/404.html');
 });
 
 app.listen(3000,() => {

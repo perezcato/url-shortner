@@ -42,9 +42,24 @@
                 </button>
             </form>
 
-            <div class="text-3xl bg-white placeholder-gray-600 text-gray-800 pb-4 pt-5 pl-20 pr-4 rounded w-4/5
-                     border-b-4 focus:outline-none focus:border-blue-800">
-
+            <div class="text-lg font-bold bg-white text-gray-800 pb-4 pt-5 pl-20 pr-4 rounded w-4/5
+                     border-b-4 focus:outline-none focus:border-blue-800 flex items-center ">
+                <div class="urls flex justify-between w-2/3 items-center">
+                    <p class="text-red-800">
+                        http://google.com
+                        {{returnLink}}
+                    </p>
+                    <p class="text-green-800">
+                        http://google.com
+                        {{short}}
+                    </p>
+                </div>
+                <div class="copy w-1/3">
+                    <button type="submit" class="bg-blue-700 hover:bg-blue-light text-white font-bold w-4/5 py-4 px-4
+                        border-b-4 border-blue-dark hover:border-blue rounded">
+                        Copy
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -57,7 +72,10 @@
         var app = new Vue({
             el: '#app',
             data: {
-                url: ''
+                url: '',
+                returnLink: '',
+                short: '',
+                success:false
             },
             methods: {
                 submitUrl(e){
@@ -73,6 +91,9 @@
                     }).then(data => {
                         if(!data.error){
                             this.url = '';
+                            this.returnLink = data.url;
+                            this.short = data.shortUrl;
+                            this.success = true;
                         }
                         console.log(data);
                     })

@@ -5,6 +5,15 @@ export const checkUrlDuplicate = async (genUrl) => {
     return !!urls.find(data => data.shorten === genUrl);
 };
 
+export const getUrl = async (url) => {
+    try{
+        const {urls} = await fs.readJson('./.data.json');
+        return urls.find(data => data.shorten === url);
+    }catch (e) {
+        return false
+    }
+};
+
 export const addurl = async (url) => {
     try{
         const {urls} = await fs.readJson('./.data.json');
@@ -31,6 +40,3 @@ export const generateUrl = async (url) => {
     }
     return false;
 };
-generateUrl('http://google.com').then(data => {
-    console.log(data);
-});
