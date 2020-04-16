@@ -16,9 +16,9 @@ app.get('/',(req,res) => {
     res.sendFile('./public/index.html');
 });
 
-app.post('/shorten', (req,res) => {
+app.post('/shorten',async (req,res) => {
     const { url } = req.body;
-    const shortUrl = generateUrl(url);
+    const shortUrl = await generateUrl(url);
     console.log(shortUrl, '-' , url);
 
     if( !shortUrl ) {
