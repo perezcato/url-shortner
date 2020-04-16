@@ -42,24 +42,26 @@
                 </button>
             </form>
 
-            <div class="text-lg font-bold bg-white text-gray-800 pb-4 pt-5 pl-20 pr-4 rounded w-4/5
+            <div v-if="success" class="text-lg font-bold bg-white text-gray-800 pb-4 pt-5 pl-20 pr-4 rounded w-4/5
                      border-b-4 focus:outline-none focus:border-blue-800 flex items-center ">
                 <div class="urls flex justify-between w-2/3 items-center">
-                    <p class="text-red-800">
-                        http://google.com
+                    <p class="text-red-800 px-4 break-words">
                         {{returnLink}}
                     </p>
-                    <p class="text-green-800">
-                        http://google.com
+                    <p id="short" class="text-green-800 short px-4 break-words">
                         {{short}}
                     </p>
                 </div>
                 <div class="copy w-1/3">
-                    <button type="submit" class="bg-blue-700 hover:bg-blue-light text-white font-bold w-4/5 py-4 px-4
+                    <button v-on:click="copyText" type="submit" class="bg-blue-700 hover:bg-blue-light text-white font-bold w-4/5 py-4 px-4
                         border-b-4 border-blue-dark hover:border-blue rounded">
                         Copy
                     </button>
                 </div>
+            </div>
+            <div v-if="error" class="text-lg font-bold bg-red-800 text-white pb-4 pt-5 pl-20 pr-4 rounded w-4/5
+                     border-b-4 focus:outline-none focus:border-blue-800 ">
+                {{errorMessage}}
             </div>
         </div>
     </div>
@@ -75,7 +77,9 @@
                 url: '',
                 returnLink: '',
                 short: '',
-                success:false
+                success: false,
+                errorMessage: '',
+                error: false
             },
             methods: {
                 submitUrl(e){
@@ -93,10 +97,25 @@
                             this.url = '';
                             this.returnLink = data.url;
                             this.short = data.shortUrl;
+                            this.error = false;
                             this.success = true;
+                        }else{
+                            this.success = false;
+                            this.errorMessage = data.error;
+                            this.error = true;
                         }
-                        console.log(data);
                     })
+                },
+                copyText(){
+                    var copyText = document.querySelector('.short');
+
+                    try{
+                        var doc = document.execCommand('copy');
+                        alert('link copied');
+                    }catch (e) {
+                        alert('unable to copy')
+                    }
+
                 }
             }
         });
