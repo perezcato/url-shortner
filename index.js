@@ -21,6 +21,11 @@ app.post('/shorten', (req,res) => {
     const shortUrl = generateUrl(url);
     console.log(shortUrl, '-' , url);
 
+    if( !shortUrl ) {
+        return res.status(422).json({
+            'error': 'Invalid Url'
+        });
+    }
     return res.json({
         url,
         shortUrl,

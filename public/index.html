@@ -33,7 +33,7 @@
             </div>
             <form @submit="submitUrl" class="w-4/5 mt-4 mb-8">
                 <div class="relative mb-8">
-                    <input v-model="url" class="text-3xl placeholder-gray-600 text-gray-800 pb-4 pt-5 pl-20 pr-4 rounded w-full
+                    <input v-model="url" required class="text-3xl placeholder-gray-600 text-gray-800 pb-4 pt-5 pl-20 pr-4 rounded w-full
                      border-b-4 focus:outline-none focus:border-blue-800" type="text" placeholder="URL address">
                 </div>
                 <button type="submit" class="bg-blue-700 hover:bg-blue-light text-white font-bold w-full py-4 px-4
@@ -41,6 +41,11 @@
                     Shorten
                 </button>
             </form>
+
+            <div class="text-3xl bg-white placeholder-gray-600 text-gray-800 pb-4 pt-5 pl-20 pr-4 rounded w-4/5
+                     border-b-4 focus:outline-none focus:border-blue-800">
+
+            </div>
         </div>
     </div>
     <!-- Hero end -->
@@ -66,7 +71,9 @@
                     }).then(data => {
                         return data.json();
                     }).then(data => {
-                        console.log(data);
+                        if(!data.error){
+                            this.url = '';
+                        }
                     })
                 }
             }
